@@ -15,22 +15,23 @@
 
 // If your 32x32 matrix has the SINGLE HEADER input,
 // use this pinout:
-#define CLK 8  // MUST be on PORTB! (Use pin 11 on Mega)
-#define OE  9
+#define CLK 11
 #define LAT 10
+#define OE  9
+
 #define A   A0
 #define B   A1
 #define C   A2
-#define D   A3
-// If your matrix has the DOUBLE HEADER input, use:
-//#define CLK 8  // MUST be on PORTB! (Use pin 11 on Mega)
-//#define LAT 9
-//#define OE  10
-//#define A   A3
-//#define B   A2
-//#define C   A1
-//#define D   A0
-RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, false);
+#define D   A3 // Comment this line out if you're using a 32x16
+
+////////////////////////////////////////////////
+/////   Instantiate RGBmatrixPanel Class   /////
+////////////////////////////////////////////////
+
+/* - One of these should be commented out!
+   - Also, make sure to adjust the saved image in the <bitmap.h> file.*/
+
+RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, true); // 32x64
 
 void setup() {
   int     i, len;
