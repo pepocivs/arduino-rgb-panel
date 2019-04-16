@@ -31,15 +31,7 @@
 /* - One of these should be commented out!
    - Also, make sure to adjust the saved image in the <bitmap.h> file.*/
 
-/* ========== For 32x64 LED panels: ==========
-  You MUST use an Arduino Mega2560 with 32x64 size RGB Panel */
-//RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, false, 64); // 32x64
-
-/* ========== For 32x32 LED panels: ========== */
-RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, false); // 32x32
-
-/* ==========  For 32x16 LED panels: ========== */
-//RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false); // 32x16
+RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, false, 64); // 32x64
 
 void setup()
 {
@@ -54,6 +46,6 @@ void loop()
 
 void loadBitmap()
 {
-  uint8_t *ptr = matrix.backBuffer(); // Get address of matrix data
-  memcpy_P(ptr, bmp, sizeof(bmp));
+  matrix.drawBitmap(0, 0, (const uint8_t *)pgm_read_word(&mask[0]), 32, 32, 0x00E9);
+  matrix.drawBitmap(0, 0, (const uint8_t *)pgm_read_word(&img[0]), 32, 32, 0xF980);
 }
