@@ -34,15 +34,15 @@ void loop() {
   for(int count = 0; count < nBars; ++count) {
     int randomNumber = rand() % height;
     int barHeight = height-randomNumber;
-    matrix.fillRect(count*barWidth, oldValues[count], barWidth, height, matrix.Color333(0, 1, 1));
-    matrix.drawRect(count*barWidth, oldValues[count], barWidth, height, matrix.Color333(0, 5, 5));
+    matrix.fillRect((count*barWidth)+1, (oldValues[count])+1, barWidth-2, height, matrix.Color333(0, 1, 1));
+    //matrix.drawRect(count*barWidth, oldValues[count], barWidth, height, matrix.Color333(0, 0, 0));
     if (randomNumber%2 == 0) {
       oldValues[count] = oldValues[count] + rand()%cadenceMax;
     } else {
       oldValues[count] = oldValues[count] - rand()%cadenceMax;
     }
-    if (oldValues[count] < 0) oldValues[count] = 0;
+    if (oldValues[count] < 2) oldValues[count] = 0;
     if (oldValues[count] > height) oldValues[count] = height;
   }
-  delay(100);
+  delay(50);
 }
