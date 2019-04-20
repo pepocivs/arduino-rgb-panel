@@ -15,8 +15,11 @@ int height = 32;
 int width = 64;
 int nBars = 3;
 int oldValues[3];
+bool decrease[3];
 int barWidth = width / nBars;
-int cadenceMax = 3;
+int cadenceMax = 12;
+int border = 2;
+int spaceBetween = (border*2);
 
 
 void setup() {
@@ -29,20 +32,25 @@ void setup() {
 }
 
 void loop() {
- 
-  matrix.fillScreen(matrix.Color333(0, 0, 0)); // Put all leds black
   for(int count = 0; count < nBars; ++count) {
-    int randomNumber = rand() % height;
-    int barHeight = height-randomNumber;
-    matrix.fillRect((count*barWidth)+1, (oldValues[count])+1, barWidth-2, height, matrix.Color333(0, 1, 1));
-    //matrix.drawRect(count*barWidth, oldValues[count], barWidth, height, matrix.Color333(0, 0, 0));
-    if (randomNumber%2 == 0) {
+    int startX = (count*barWidth) + border;
+    int startY = (oldValues[count]) + border;
+    
+    if (decrease[count] == true) { // Clean screen just at the points needed
+      matrix.fillRect(startX, 0, barWidth, oldValues[count], matrix.Color333(0, 0, 0));
+    }
+    // Fill the rectangle
+    matrix.fillRect(startX, startY, barWidth-spaceBetween, height, matrix.Color888(0x1E, 0xAF, 0x95));
+    
+    if ((rand()%height)%2 == 0) {
       oldValues[count] = oldValues[count] + rand()%cadenceMax;
+      decrease[count] = true;
     } else {
       oldValues[count] = oldValues[count] - rand()%cadenceMax;
+      decrease[count] = false;
     }
-    if (oldValues[count] < 2) oldValues[count] = 0;
+    
+    if (oldValues[count] < cadenceMax) oldValues[count] = cadenceMax;
     if (oldValues[count] > height) oldValues[count] = height;
   }
-  delay(50);
 }
