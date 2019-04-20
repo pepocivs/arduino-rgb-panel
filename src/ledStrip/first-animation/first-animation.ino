@@ -4,7 +4,7 @@
 #include "step02.h"
 
 #define NUM_LEDS 225
-#define DATA_PIN 3
+#define DATA_PIN 5
 CRGB leds[NUM_LEDS];
 
 
