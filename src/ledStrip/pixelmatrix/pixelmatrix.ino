@@ -5,15 +5,16 @@
 #include "rgb.h"
 #include "clock.h"
 #include "hello.h"
+#include "white.h"
 
 #define NUM_LEDS 225
-#define DATA_PIN 3
+#define DATA_PIN 5
 CRGB leds[NUM_LEDS];
 
 
  void setup() { 
   FastLED.addLeds<NEOPIXEL,DATA_PIN>(leds, NUM_LEDS);  // Init of the Fastled library
-  FastLED.setBrightness(15);
+  FastLED.setBrightness(20);
 }
 
 void loop() {
