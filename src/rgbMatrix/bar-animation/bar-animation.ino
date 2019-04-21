@@ -20,19 +20,48 @@ void setup() {
 }
 
 void pintarBarra(int nBarra, int altura) {
-  matrix.fillRect(posicionXInicial + (anchuraBarra * nBarra) + nBarra, alturaMaxBarra - altura, anchuraBarra, alturaMaxBarra, matrix.Color333(0, 7, 7));  
+  int ejeX = posicionXInicial + (anchuraBarra * nBarra) + nBarra;
+  int ejeY = alturaMaxBarra - altura;
+  int auxY = ejeY;
+  matrix.fillRect(ejeX, 0, anchuraBarra, ejeY, matrix.Color333(0, 0, 0));
+  // matrix.fillRect(ejeX, ejeY, anchuraBarra, altura, matrix.Color333(0, 5, 5)); 
+  if (ejeY < 8) { 
+    matrix.fillRect(ejeX, ejeY, anchuraBarra, 8 - ejeY, matrix.Color888(0x00,0x37,0x58));
+    auxY = ejeY + 8 - ejeY;
+  }
+  if (ejeY < 14) { 
+    matrix.fillRect(ejeX, auxY, anchuraBarra, 14 - ejeY, matrix.Color888(0x00,0xa8,0x84));
+    auxY = auxY + 6;
+  }
+  if (ejeY < 20) { 
+    matrix.fillRect(ejeX, ejeY + auxY, anchuraBarra, auxY, matrix.Color888(0x00,0xfc,0xdc));
+    auxY = auxY - 6;
+  }
+  /*
+   if (auxY < 32) { 
+    matrix.fillRect(ejeX, auxY, anchuraBarra, 8 - ejeY, matrix.Color888(0xff,0xff,0xff));
+    auxY = 24;
+   }
+   if (auxY < 26) { 
+    matrix.fillRect(ejeX, auxY, anchuraBarra, 8 - ejeY, matrix.Color888(0x40,0xff,0xfe));
+    auxY = 18;
+   }
+   if (auxY < 20) { 
+    matrix.fillRect(ejeX, auxY, anchuraBarra, 8 - ejeY, matrix.Color888(0x00,0xfc,0xdc));
+    auxY = 12;
+   }
+  
+    */ 
 }
 
+
 void loop() {
-  matrix.fillScreen(matrix.Color333(3, 0, 0));
-  pintarBarra(0,20);
+ 
+  pintarBarra(0,29);
   pintarBarra(1,16);
   pintarBarra(2,8);
     
   delay(tiempoEspera);
-  matrix.fillScreen(matrix.Color333(3, 0, 0));
-  pintarBarra(0,18);
-  pintarBarra(1,20);
-  pintarBarra(2,15);
-  delay(tiempoEspera);
+
+ 
 }
