@@ -1,0 +1,8 @@
+{
+  "name": "img-to-array",
+  "version": "1.0.0",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "jimp": "^0.6.4"
+  }
+}
