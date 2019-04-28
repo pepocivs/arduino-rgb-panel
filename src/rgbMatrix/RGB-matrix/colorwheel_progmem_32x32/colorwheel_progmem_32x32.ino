@@ -31,7 +31,7 @@
 /* - One of these should be commented out!
    - Also, make sure to adjust the saved image in the <bitmap.h> file.*/
 
-RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, true); // 32x64
+RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, true, 64); // 32x64
 
 void setup() {
   int     i, len;

@@ -11,7 +11,7 @@
 
 // If your 32x32 matrix has the SINGLE HEADER input,
 // use this pinout:
-#define CLK 8  // MUST be on PORTB! (Use pin 11 on Mega)
+#define CLK 11  // MUST be on PORTB! (Use pin 11 on Mega)
 #define OE  9
 #define LAT 10
 #define A   A0
@@ -26,7 +26,7 @@
 //#define B   A2
 //#define C   A1
 //#define D   A0
-RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, false);
+RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, false, 64);
 
 void setup() {
   int      x, y, hue;

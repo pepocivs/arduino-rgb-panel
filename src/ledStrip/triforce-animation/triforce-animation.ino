@@ -23,7 +23,7 @@ const short tiempo = 50;
 
  void setup() { 
   FastLED.addLeds<NEOPIXEL,DATA_PIN>(leds, NUM_LEDS);  // Init of the Fastled library
-  FastLED.setBrightness(15);
+  FastLED.setBrightness(50);
 }
 
 void loop() {
