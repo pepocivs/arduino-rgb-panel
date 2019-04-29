@@ -2,7 +2,7 @@ const Jimp = require('jimp');
 const fs = require('fs');
 
 const getHex = (str) => {
-  return `0x${str.toString(16).slice(0, -2)}`;
+  return (str === 255) ? '0x000000' : `0x${str.toString(16).slice(0, -2)}`;
 }
 
 const getPixels = (image) => {
