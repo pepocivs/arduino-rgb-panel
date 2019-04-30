@@ -1,6 +1,8 @@
 const Jimp = require('jimp');
 const fs = require('fs');
 
+const imagePath = 'images/';
+
 // Helper Functions
 const getHex = (str) => {
   return (str <= 255) ? '0x000000' : `0x${str.toString(16).slice(0, -2)}`;
@@ -35,19 +37,26 @@ const getPixels = (image) => {
 };
 const getArrayOfPixels = (filePath) => {
   return Jimp.read(filePath)
-    .then(image => getPixels(image))
+    .then(image => {
+      return {
+        totalSize: (image.bitmap.width * image.bitmap.height),
+        colorString: getPixels(image),
+      }
+    })
     .catch(err => { throw err });
 }
 
 // Core functions
-const generateFiles = (pixelImages) => {
+const generateFiles = async (pixelImages) => {
   Object.keys(pixelImages).map(animationName => {
-    console.log(animationName);
+    let hFile = `const long animation[][${pixelImages[animationName][0].totalSize}] PROGMEM = {\n`;
     const sortedFrames = sortByKey(pixelImages[animationName], 'fileName');
     sortedFrames.map(frame => {
-      console.log(frame.fileName);
-      console.log(frame.colorString);
+      hFile = `${hFile}{\n${frame.colorString}},\n`;
     });
+    hFile = `${hFile.slice(0, -3)}\n}\n};`;
+    fs.writeFile(`${imagePath}${animationName}/${animationName}.h`, hFile); 
+    console.log(`Saved: ${imagePath}${animationName}/${animationName}.h`);
   });
 };
 const walkDirectories = function (dir, animationName = '') {
@@ -60,11 +69,12 @@ const walkDirectories = function (dir, animationName = '') {
     } else if (checkExtension(fileName)) {
       const filePath = `${dir}${fileName}`;
       promises.push(
-        getArrayOfPixels(filePath).then(colorString => {
+        getArrayOfPixels(filePath).then(imageInfo => {
           if (!pixelImages[animationName]) pixelImages[animationName] = [];
           pixelImages[animationName].push({
             fileName,
-            colorString
+            totalSize: imageInfo.totalSize,
+            colorString: imageInfo.colorString
           });
         })
       );
@@ -75,4 +85,4 @@ const walkDirectories = function (dir, animationName = '') {
   });
 };
 
-walkDirectories('images/');
+walkDirectories(imagePath);
