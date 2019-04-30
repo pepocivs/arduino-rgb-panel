@@ -1,16 +1,16 @@
 #include <avr/pgmspace.h>  // Needed to store stuff in Flash using PROGMEM
 #include "FastLED.h" // Fastled library to control the LEDs
-#include "haunter.h"
+#include "rothko.h"
 
 #define NUM_LEDS 525
 #define DATA_PIN 5
-#define SPEED 100
+#define SPEED 15000
 CRGB leds[NUM_LEDS];
 
 
 void setup() { 
   FastLED.addLeds<NEOPIXEL,DATA_PIN>(leds, NUM_LEDS);  // Init of the Fastled library
-  FastLED.setBrightness(65);
+  FastLED.setBrightness(40);
 }
 
 void loop() {
