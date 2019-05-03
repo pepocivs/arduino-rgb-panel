@@ -49,7 +49,7 @@ const getArrayOfPixels = (filePath) => {
 // Core functions
 const generateFiles = async (pixelImages) => {
   Object.keys(pixelImages).map(animationName => {
-    let hFile = `const long animation[][${pixelImages[animationName][0].totalSize}] PROGMEM = {\n`;
+    let hFile = `const long ${animationName}[][${pixelImages[animationName][0].totalSize}] PROGMEM = {\n`;
     const sortedFrames = sortByKey(pixelImages[animationName], 'fileName');
     sortedFrames.map(frame => {
       hFile = `${hFile}{\n${frame.colorString}},\n`;
