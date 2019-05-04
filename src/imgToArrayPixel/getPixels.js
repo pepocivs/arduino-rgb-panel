@@ -55,6 +55,7 @@ const generateFiles = async (pixelImages) => {
       hFile = `${hFile}{\n${frame.colorString}},\n`;
     });
     hFile = `${hFile.slice(0, -3)}\n}\n};`;
+    hFile = `${hFile}\nconst int ${animationName}Frames = ${sortedFrames.length};`;
     fs.writeFile(`${imagePath}${animationName}/${animationName}.h`, hFile); 
     console.log(`Saved: ${imagePath}${animationName}/${animationName}.h`);
   });
