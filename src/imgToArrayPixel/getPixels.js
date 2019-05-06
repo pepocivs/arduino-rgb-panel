@@ -4,8 +4,12 @@ const fs = require('fs');
 const imagePath = 'images/';
 
 // Helper Functions
-const getHex = (str) => {
-  return (str <= 255) ? '0x000000' : `0x${str.toString(16).slice(0, -2)}`;
+const getHex = (str, percentileChange = false) => {
+  if (percentileChange) {
+    return (str <= 255) ? '0x000000' : `0xpepope`;
+  } else {
+    return (str <= 255) ? '0x000000' : `0x${str.toString(16).slice(0, -2)}`;
+  }
 };
 const checkExtension = (fileName) => {
   const validExt = ['png', 'jpg', 'bmp'];
@@ -20,27 +24,27 @@ const sortByKey = (array, key) => {
 };
 
 // Getter functions
-const getPixels = (image) => {
+const getPixels = (image, percentileChange = false) => {
   const imageWidth = image.bitmap.width;
   const imageHeight = image.bitmap.height;
   let imageColors = '';
   for (let y = 0; y < imageHeight; y++) {
     if (y !== 0 && y % 2 !== 0) {
-      for (let x = imageWidth - 1; x >= 0; x--) imageColors = `${imageColors}${getHex(image.getPixelColor(x, y))}, `;
+      for (let x = imageWidth - 1; x >= 0; x--) imageColors = `${imageColors}${getHex(image.getPixelColor(x, y), percentileChange)}, `;
     } else {
-      for (let x = 0; x < imageWidth; x++) imageColors = `${imageColors}${getHex(image.getPixelColor(x, y))}, `;
+      for (let x = 0; x < imageWidth; x++) imageColors = `${imageColors}${getHex(image.getPixelColor(x, y), percentileChange)}, `;
     }
     imageColors = `${imageColors}\n`;
   }
   imageColors = imageColors.slice(0, -3);
   return imageColors;
 };
-const getArrayOfPixels = (filePath) => {
+const getArrayOfPixels = (filePath, percentileChange = false) => {
   return Jimp.read(filePath)
     .then(image => {
       return {
         totalSize: (image.bitmap.width * image.bitmap.height),
-        colorString: getPixels(image),
+        colorString: getPixels(image, percentileChange),
       }
     })
     .catch(err => { throw err });
@@ -86,4 +90,28 @@ const walkDirectories = function (dir, animationName = '') {
   });
 };
 
-walkDirectories(imagePath);
+const cromaticTest = () => {
+  const promises = [];
+  const imageSet = [];
+  const iterations = 10;
+  const increment = 10;
+
+  for (let cont = 0; cont < iterations; cont ++) {
+    promises.push(
+      getArrayOfPixels('images/cromatic/cromatic.png', (iterations * increment)).then(imageInfo => {
+        imageSet.push({
+          fileName: `cromaticTest${cont}`,
+          totalSize: imageInfo.totalSize,
+          colorString: imageInfo.colorString
+        });
+      })
+    );
+  }
+  
+  Promise.all(promises).then(() => {
+    generateFiles({cromatic: imageSet});
+  });
+}
+
+// walkDirectories(imagePath);
+cromaticTest();
