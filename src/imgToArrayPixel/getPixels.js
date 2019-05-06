@@ -4,12 +4,30 @@ const fs = require('fs');
 const imagePath = 'images/';
 
 // Helper Functions
-const getHex = (str, percentileChange = false) => {
-  if (percentileChange) {
-    return (str <= 255) ? '0x000000' : `0xpepope`;
-  } else {
-    return (str <= 255) ? '0x000000' : `0x${str.toString(16).slice(0, -2)}`;
-  }
+const hasSpecialBrightness = (percentileChange, x, y) => (percentileChange && y > 8 && !((y === 20) && (x === 24)));
+
+const calculateBrightness = (hexNumber, percentileChange) => {
+  const maxValue = 255;
+  const additionValue = Math.floor(maxValue*percentileChange/100);
+  const red = parseInt(hexNumber.substring(0, 2), 16);
+  const green = parseInt(hexNumber.substring(2, 4), 16);
+  const blue = parseInt(hexNumber.substring(4, 6), 16);
+
+  const newRed = ((red + additionValue) > maxValue) ? maxValue :  (red + additionValue);
+  const newGreen = ((green + additionValue) > maxValue) ? maxValue :  (green + additionValue);
+  const newBlue = ((blue + additionValue) > maxValue) ? maxValue :  (blue + additionValue);
+
+  return `${toHex(newRed)}${toHex(newGreen)}${toHex(newBlue)}`;
+}
+function toHex(d) {
+  return  ("0"+(Number(d).toString(16))).slice(-2).toUpperCase()
+}
+
+const getHex = (str, percentileChange, x, y) => {
+  const hexNumber = (("0000000" + ((str|0)+4294967296).toString(16)).substr(-8)).slice(0, -2);
+  return (hasSpecialBrightness(percentileChange, x, y)) 
+    ? `0x${calculateBrightness(hexNumber, percentileChange)}`
+    : `0x${hexNumber}`;
 };
 const checkExtension = (fileName) => {
   const validExt = ['png', 'jpg', 'bmp'];
@@ -24,22 +42,22 @@ const sortByKey = (array, key) => {
 };
 
 // Getter functions
-const getPixels = (image, percentileChange = false) => {
+const getPixels = (image, percentileChange) => {
   const imageWidth = image.bitmap.width;
   const imageHeight = image.bitmap.height;
   let imageColors = '';
   for (let y = 0; y < imageHeight; y++) {
     if (y !== 0 && y % 2 !== 0) {
-      for (let x = imageWidth - 1; x >= 0; x--) imageColors = `${imageColors}${getHex(image.getPixelColor(x, y), percentileChange)}, `;
+      for (let x = imageWidth - 1; x >= 0; x--) imageColors = `${imageColors}${getHex(image.getPixelColor(x, y), percentileChange, x, y)}, `;
     } else {
-      for (let x = 0; x < imageWidth; x++) imageColors = `${imageColors}${getHex(image.getPixelColor(x, y), percentileChange)}, `;
+      for (let x = 0; x < imageWidth; x++) imageColors = `${imageColors}${getHex(image.getPixelColor(x, y), percentileChange, x, y)}, `;
     }
     imageColors = `${imageColors}\n`;
   }
   imageColors = imageColors.slice(0, -3);
   return imageColors;
 };
-const getArrayOfPixels = (filePath, percentileChange = false) => {
+const getArrayOfPixels = (filePath, percentileChange) => {
   return Jimp.read(filePath)
     .then(image => {
       return {
@@ -94,11 +112,10 @@ const cromaticTest = () => {
   const promises = [];
   const imageSet = [];
   const iterations = 10;
-  const increment = 10;
-
+  const increment = 3;
   for (let cont = 0; cont < iterations; cont ++) {
     promises.push(
-      getArrayOfPixels('images/cromatic/cromatic.png', (iterations * increment)).then(imageInfo => {
+      getArrayOfPixels('images/cromatic/cromatic.png', (cont * increment)).then(imageInfo => {
         imageSet.push({
           fileName: `cromaticTest${cont}`,
           totalSize: imageInfo.totalSize,
@@ -107,11 +124,10 @@ const cromaticTest = () => {
       })
     );
   }
-  
   Promise.all(promises).then(() => {
     generateFiles({cromatic: imageSet});
   });
 }
 
-// walkDirectories(imagePath);
-cromaticTest();
+walkDirectories(imagePath);
+// cromaticTest();
