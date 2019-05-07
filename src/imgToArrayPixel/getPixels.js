@@ -20,7 +20,7 @@ const calculateBrightness = (hexNumber, percentileChange) => {
   return `${toHex(newRed)}${toHex(newGreen)}${toHex(newBlue)}`;
 }
 function toHex(d) {
-  return  ("0"+(Number(d).toString(16))).slice(-2).toUpperCase()
+  return  ("0"+(Number(d).toString(16))).slice(-2);
 }
 
 const getHex = (str, percentileChange, x, y) => {
@@ -28,6 +28,12 @@ const getHex = (str, percentileChange, x, y) => {
   return (hasSpecialBrightness(percentileChange, x, y)) 
     ? `0x${calculateBrightness(hexNumber, percentileChange)}`
     : `0x${hexNumber}`;
+};
+const getRealHex = (str, percentileChange, x, y) => {
+  const hexNumber = (("0000000" + ((str|0)+4294967296).toString(16)).substr(-8));
+  return (hasSpecialBrightness(percentileChange, x, y)) 
+    ? `${calculateBrightness(hexNumber, percentileChange)}ff`
+    : hexNumber;
 };
 const checkExtension = (fileName) => {
   const validExt = ['png', 'jpg', 'bmp'];
@@ -42,6 +48,19 @@ const sortByKey = (array, key) => {
 };
 
 // Getter functions
+const createResultImage = (image, percentileChange) => {
+  const imageWidth = image.bitmap.width;
+  const imageHeight = image.bitmap.height;
+  new Jimp(imageWidth, imageHeight, (err, newImage) => {
+    for (let y = 0; y < imageHeight; y++) {
+      for (let x = 0; x < imageWidth; x++) {
+        newImage.setPixelColor(parseInt(getRealHex(image.getPixelColor(x, y), percentileChange, x, y), 16), x, y);
+      }
+    }
+    newImage.write(`images/generated/${percentileChange.toString().padStart(3, '0')}test.png`);
+  });
+}
+
 const getPixels = (image, percentileChange) => {
   const imageWidth = image.bitmap.width;
   const imageHeight = image.bitmap.height;
@@ -57,9 +76,10 @@ const getPixels = (image, percentileChange) => {
   imageColors = imageColors.slice(0, -3);
   return imageColors;
 };
-const getArrayOfPixels = (filePath, percentileChange) => {
+const getArrayOfPixels = (filePath, percentileChange, generate) => {
   return Jimp.read(filePath)
     .then(image => {
+      if (generate) createResultImage(image, percentileChange);
       return {
         totalSize: (image.bitmap.width * image.bitmap.height),
         colorString: getPixels(image, percentileChange),
@@ -115,7 +135,7 @@ const cromaticTest = () => {
   const increment = 3;
   for (let cont = 0; cont < iterations; cont ++) {
     promises.push(
-      getArrayOfPixels('images/cromatic/cromatic.png', (cont * increment)).then(imageInfo => {
+      getArrayOfPixels('images/cromatic/cromatic.png', (cont * increment), true).then(imageInfo => {
         imageSet.push({
           fileName: `cromaticTest${cont}`,
           totalSize: imageInfo.totalSize,
