@@ -7,15 +7,27 @@ const imagePath = 'images/';
 const hasSpecialBrightness = (percentileChange, x, y) => (percentileChange && y > 8 && !((y === 20) && (x === 24)));
 
 const calculateBrightness = (hexNumber, percentileChange) => {
+  const add = true;
   const maxValue = 255;
+  const minValue = 0;
   const additionValue = Math.floor(maxValue*percentileChange/100);
   const red = parseInt(hexNumber.substring(0, 2), 16);
   const green = parseInt(hexNumber.substring(2, 4), 16);
   const blue = parseInt(hexNumber.substring(4, 6), 16);
 
-  const newRed = ((red + additionValue) > maxValue) ? maxValue :  (red + additionValue);
-  const newGreen = ((green + additionValue) > maxValue) ? maxValue :  (green + additionValue);
-  const newBlue = ((blue + additionValue) > maxValue) ? maxValue :  (blue + additionValue);
+  let newRed
+  let newGreen
+  let newBlue
+
+  if (add) {
+    newRed = ((red + additionValue) > maxValue) ? maxValue :  (red + additionValue);
+    newGreen = ((green + additionValue) > maxValue) ? maxValue :  (green + additionValue);
+    newBlue = ((blue + additionValue) > maxValue) ? maxValue :  (blue + additionValue);
+  } else {
+    newRed = ((red - additionValue) < minValue) ? minValue :  (red - additionValue);
+    newGreen = ((green - additionValue) < minValue) ? minValue :  (green - additionValue);
+    newBlue = ((blue - additionValue) < minValue) ? minValue :  (blue - additionValue);
+  }
 
   return `${toHex(newRed)}${toHex(newGreen)}${toHex(newBlue)}`;
 }
@@ -131,8 +143,8 @@ const walkDirectories = function (dir, animationName = '') {
 const cromaticTest = () => {
   const promises = [];
   const imageSet = [];
-  const iterations = 10;
-  const increment = 3;
+  const iterations = 100;
+  const increment = 1;
   for (let cont = 0; cont < iterations; cont ++) {
     promises.push(
       getArrayOfPixels('images/cromatic/cromatic.png', (cont * increment), true).then(imageInfo => {
@@ -149,5 +161,5 @@ const cromaticTest = () => {
   });
 }
 
-walkDirectories(imagePath);
-// cromaticTest();
+// walkDirectories(imagePath);
+cromaticTest();
