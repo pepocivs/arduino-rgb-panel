@@ -1,8 +1,6 @@
 #include <avr/pgmspace.h>  // Needed to store stuff in Flash using PROGMEM
 #include "FastLED.h" // Fastled library to control the LEDs
-#include "link.h"
 #include "triforce3D.h"
-#include "majorasHard.h"
 #include "majorasSoft.h"
 #include "majorasBorder.h"
 
@@ -43,7 +41,7 @@ void loop() {
       showAnimation(majorasBorder, majorasBorderFrames, 50);
       break;
     case 2:
-      showAnimation(majorasSoft, majorasSoftFrames, 280);
+      showAnimation(majorasSoft, majorasSoftFrames, 200);
       break;
     case 3:
       showAnimation(triforce3D, triforce3DFrames, 50);
