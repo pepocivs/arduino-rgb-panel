@@ -7,7 +7,7 @@ const imagePath = 'images/';
 const hasSpecialBrightness = (percentileChange, x, y) => (percentileChange && y > 8 && !((y === 20) && (x === 24)));
 
 const calculateBrightness = (hexNumber, percentileChange) => {
-  const add = true;
+  const toWhite = false;
   const maxValue = 255;
   const minValue = 0;
   const additionValue = Math.floor(maxValue*percentileChange/100);
@@ -15,11 +15,11 @@ const calculateBrightness = (hexNumber, percentileChange) => {
   const green = parseInt(hexNumber.substring(2, 4), 16);
   const blue = parseInt(hexNumber.substring(4, 6), 16);
 
-  let newRed
-  let newGreen
-  let newBlue
+  let newRed = red;
+  let newGreen = green;
+  let newBlue = blue;
 
-  if (add) {
+  if (toWhite) {
     newRed = ((red + additionValue) > maxValue) ? maxValue :  (red + additionValue);
     newGreen = ((green + additionValue) > maxValue) ? maxValue :  (green + additionValue);
     newBlue = ((blue + additionValue) > maxValue) ? maxValue :  (blue + additionValue);
@@ -143,8 +143,8 @@ const walkDirectories = function (dir, animationName = '') {
 const cromaticTest = () => {
   const promises = [];
   const imageSet = [];
-  const iterations = 100;
-  const increment = 1;
+  const iterations = 5;
+  const increment = 5;
   for (let cont = 0; cont < iterations; cont ++) {
     promises.push(
       getArrayOfPixels('images/cromatic/cromatic.png', (cont * increment), true).then(imageInfo => {
@@ -161,5 +161,5 @@ const cromaticTest = () => {
   });
 }
 
-// walkDirectories(imagePath);
-cromaticTest();
+walkDirectories(imagePath);
+// cromaticTest();
