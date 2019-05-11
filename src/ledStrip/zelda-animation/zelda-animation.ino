@@ -1,13 +1,10 @@
 #include <avr/pgmspace.h>  // Needed to store stuff in Flash using PROGMEM
 #include "FastLED.h" // Fastled library to control the LEDs
-#include "bulbasur.h"
-#include "emojis.h"
-#include "froslass.h"
-#include "gaysper.h"
-#include "haunter.h"
 #include "link.h"
-#include "rothko.h"
 #include "triforce3D.h"
+#include "majorasHard.h"
+#include "majorasSoft.h"
+#include "majorasBorder.h"
 
 #define NUM_LEDS 525
 
@@ -16,9 +13,9 @@ const int dataPin = 6;
 const int changeProgramButton = 5;
 const int addBrightnessButton = 4;
 const int removeBrightnessButton = 3;
+const int nPrograms = 3;
 
-
-int brightness = 10;
+int brightness = 20;
 int programButtonState = 0;
 int brightnessButtonState = 0;
 int programNo = 1;
@@ -43,35 +40,18 @@ void loop() {
   changeBrightness(removeBrightnessButton, -1);
   switch (programNo) {
     case 1:
-      showAnimation(link, linkFrames, 280);
+      showAnimation(majorasBorder, majorasBorderFrames, 50);
       break;
     case 2:
-      showAnimation(triforce3D, triforce3DFrames, 50);
+      showAnimation(majorasSoft, majorasSoftFrames, 280);
       break;
     case 3:
-      showAnimation(bulbasur, bulbasurFrames, 280);
-      break;
-    case 4:
-      showAnimation(emojis, emojisFrames, 50);
-      break;
-    case 5:
-      showAnimation(froslass, froslassFrames, 180);
+      showAnimation(triforce3D, triforce3DFrames, 50);
       break;
     default:
       FastLED.clear();
       break;
   }
-  /*
-      case 6:
-      showAnimation(rothko, rothkoFrames, 1000);
-      break;
-    case 7:
-      showAnimation(haunter, haunterFrames, 280);
-      break;
-    case 8:
-      showAnimation(gaysper, gaysperFrames, 280);
-      break;
-  */
 }
 
 void showAnimation(const long animation[][525], int nFrames, int frameSpeed) {
@@ -91,7 +71,7 @@ void changeProgram(int programButton) {
   programButtonState = digitalRead(programButton);
   if (programButtonState == LOW) {
     delay(300);
-    if (programNo == 15) {
+    if (programNo == nPrograms) {
       programNo = 1;
       displayBinary(programNo);
     } else {
