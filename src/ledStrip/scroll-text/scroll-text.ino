@@ -2,7 +2,7 @@
 #include <Adafruit_NeoMatrix.h>
 #include <Adafruit_NeoPixel.h>
 
-#define PIN 5
+#define PIN 6
 
 // MATRIX DECLARATION:
 // Parameter 1 = width of NeoPixel matrix

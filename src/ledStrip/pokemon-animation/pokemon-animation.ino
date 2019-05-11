@@ -1,9 +1,10 @@
 #include <avr/pgmspace.h>  // Needed to store stuff in Flash using PROGMEM
 #include "FastLED.h" // Fastled library to control the LEDs
-#include "bulbasur.h"
 #include "trainer.h"
 #include "paletaTown.h"
+#include "bulbasur.h"
 #include "froslass.h"
+#include "haunter.h"
 
 #define NUM_LEDS 525
 
@@ -12,9 +13,9 @@ const int dataPin = 6;
 const int changeProgramButton = 5;
 const int addBrightnessButton = 4;
 const int removeBrightnessButton = 3;
+const int nPrograms = 5;
 
-
-int brightness = 10;
+int brightness = 15;
 int programButtonState = 0;
 int brightnessButtonState = 0;
 int programNo = 1;
@@ -39,16 +40,19 @@ void loop() {
   changeBrightness(removeBrightnessButton, -1);
   switch (programNo) {
     case 1:
-      showAnimation(paletaTown, paletaTownFrames, 280);
+      showAnimation(trainer, trainerFrames, 280);
       break;
     case 2:
-      showAnimation(trainer, trainerFrames, 280);
+      showAnimation(paletaTown, paletaTownFrames, 280);
       break;
     case 3:
       showAnimation(bulbasur, bulbasurFrames, 280);
       break;
     case 4:
       showAnimation(froslass, froslassFrames, 180);
+      break;
+    case 5:
+      showAnimation(haunter, haunterFrames, 180);
       break;
     default:
       FastLED.clear();
@@ -73,7 +77,7 @@ void changeProgram(int programButton) {
   programButtonState = digitalRead(programButton);
   if (programButtonState == LOW) {
     delay(300);
-    if (programNo == 15) {
+    if (programNo == nPrograms) {
       programNo = 1;
       displayBinary(programNo);
     } else {
