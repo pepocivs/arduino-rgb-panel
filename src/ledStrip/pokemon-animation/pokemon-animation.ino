@@ -1,9 +1,8 @@
-k
-
 #include <avr/pgmspace.h>  // Needed to store stuff in Flash using PROGMEM
 #include "FastLED.h" // Fastled library to control the LEDs
 #include "bulbasur.h"
 #include "trainer.h"
+#include "paletaTown.h"
 #include "froslass.h"
 
 #define NUM_LEDS 525
@@ -40,12 +39,15 @@ void loop() {
   changeBrightness(removeBrightnessButton, -1);
   switch (programNo) {
     case 1:
-      showAnimation(trainer, trainerFrames, 280);
+      showAnimation(paletaTown, paletaTownFrames, 280);
       break;
     case 2:
-      showAnimation(bulbasur, bulbasurFrames, 280);
+      showAnimation(trainer, trainerFrames, 280);
       break;
     case 3:
+      showAnimation(bulbasur, bulbasurFrames, 280);
+      break;
+    case 4:
       showAnimation(froslass, froslassFrames, 180);
       break;
     default:
