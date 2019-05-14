@@ -24,3 +24,8 @@ const long emojis[][525] PROGMEM = {
 }
 };
 const int emojisFrames = 1;
+        
+const int emojisWidth = 21;
+        
+const int emojisHeight = 25;
+      

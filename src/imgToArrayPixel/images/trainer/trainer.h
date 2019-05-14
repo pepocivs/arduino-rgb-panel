@@ -178,3 +178,8 @@ const long trainer[][525] PROGMEM = {
 }
 };
 const int trainerFrames = 8;
+        
+const int trainerWidth = 21;
+        
+const int trainerHeight = 25;
+      

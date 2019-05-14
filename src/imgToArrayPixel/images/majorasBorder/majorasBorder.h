@@ -24,3 +24,8 @@ const long majorasBorder[][525] PROGMEM = {
 }
 };
 const int majorasBorderFrames = 1;
+        
+const int majorasBorderWidth = 21;
+        
+const int majorasBorderHeight = 25;
+      

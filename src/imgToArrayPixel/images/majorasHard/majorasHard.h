@@ -178,3 +178,8 @@ const long majorasHard[][525] PROGMEM = {
 }
 };
 const int majorasHardFrames = 8;
+        
+const int majorasHardWidth = 21;
+        
+const int majorasHardHeight = 25;
+      
