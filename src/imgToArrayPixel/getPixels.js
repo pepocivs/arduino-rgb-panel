@@ -2,12 +2,18 @@ const Jimp = require('jimp');
 const fs = require('fs');
 
 const imagePath = 'images/';
+const zigzag = false;
+const rgb = true;
+
 
 // Helper functions
 const getHex = (str) => {
   const hexNumber = (("0000000" + ((str|0)+4294967296).toString(16)).substr(-8)).slice(0, -2);
-  return `0x${hexNumber}`;
+  return (rgb) ? getRGB(hexNumber): `0x${hexNumber}`;
 };
+const getRGB = (hex) => {
+  return `{0x${hex.substr(0, 2)}, 0x${hex.substr(2, 2)}, 0x${hex.substr(4, 2)}}`
+}
 const checkExtension = (fileName) => {
   const validExt = ['png', 'jpg', 'bmp'];
   const ext = fileName.split('.').pop();
@@ -25,7 +31,7 @@ const getPixels = (image) => {
   const imageHeight = image.bitmap.height;
   let imageColors = '';
   for (let y = 0; y < imageHeight; y++) {
-    if (y !== 0 && y % 2 !== 0) {
+    if (y !== 0 && y % 2 !== 0 && zigzag) {
       for (let x = imageWidth - 1; x >= 0; x--) imageColors = `${imageColors}${getHex(image.getPixelColor(x, y))}, `;
     } else {
       for (let x = 0; x < imageWidth; x++) imageColors = `${imageColors}${getHex(image.getPixelColor(x, y))}, `;
@@ -40,8 +46,8 @@ const getArrayOfPixels = (filePath) => {
     .then(image => {
       return {
         totalSize: (image.bitmap.width * image.bitmap.height),
-        height: image.bitmap.width,
-        width: image.bitmap.height,
+        width: image.bitmap.width,
+        height: image.bitmap.height,
         colorString: getPixels(image),
       }
     })
@@ -52,7 +58,9 @@ const getArrayOfPixels = (filePath) => {
 const generateFiles = async (pixelImages) => {
   Object.keys(pixelImages).map(animationName => {
     let propertiesVar = '';
-    let hFile = `const long ${animationName}[][${pixelImages[animationName][0].totalSize}] PROGMEM = {\n`;
+    const rgbDef = (rgb) ? '[3]' : '';
+    const typeVar = (rgb) ? 'uint8_t' : 'long';
+    let hFile = `const ${typeVar} ${animationName}[][${pixelImages[animationName][0].totalSize}]${rgbDef} PROGMEM = {\n`;
     const sortedFrames = sortByKey(pixelImages[animationName], 'fileName');
     sortedFrames.map(frame => {
       hFile = `${hFile}{\n${frame.colorString}},\n`;
