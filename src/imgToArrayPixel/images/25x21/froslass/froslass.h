@@ -47,7 +47,7 @@ const long froslass[][525] PROGMEM = {
 };
 const int froslassFrames = 2;
         
-const int froslassWidth = 21;
+const int froslassWidth = 25;
         
-const int froslassHeight = 25;
+const int froslassHeight = 21;
       

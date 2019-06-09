@@ -201,7 +201,7 @@ const long paletaTown[][525] PROGMEM = {
 };
 const int paletaTownFrames = 9;
         
-const int paletaTownWidth = 21;
+const int paletaTownWidth = 25;
         
-const int paletaTownHeight = 25;
+const int paletaTownHeight = 21;
       

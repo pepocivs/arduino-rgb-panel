@@ -1,15 +1,26 @@
 const Jimp = require('jimp');
 const fs = require('fs');
 
-const imagePath = 'images/';
-const zigzag = false;
-const rgb = true;
+const configs = {
+  ledMatrix: {
+    imagePath: 'images/64x64/',
+    zigzag: false,
+    rgb: true,
+  },
+  ledStrip: {
+    imagePath: 'images/25x21/',
+    zigzag: true,
+    rgb: false,
+  }
+}
+
+const config = configs.ledStrip;
 
 
 // Helper functions
 const getHex = (str) => {
   const hexNumber = (("0000000" + ((str|0)+4294967296).toString(16)).substr(-8)).slice(0, -2);
-  return (rgb) ? getRGB(hexNumber): `0x${hexNumber}`;
+  return (config.rgb) ? getRGB(hexNumber): `0x${hexNumber}`;
 };
 const getRGB = (hex) => {
   return `{0x${hex.substr(0, 2)}, 0x${hex.substr(2, 2)}, 0x${hex.substr(4, 2)}}`
@@ -31,7 +42,7 @@ const getPixels = (image) => {
   const imageHeight = image.bitmap.height;
   let imageColors = '';
   for (let y = 0; y < imageHeight; y++) {
-    if (y !== 0 && y % 2 !== 0 && zigzag) {
+    if (y !== 0 && y % 2 !== 0 && config.zigzag) {
       for (let x = imageWidth - 1; x >= 0; x--) imageColors = `${imageColors}${getHex(image.getPixelColor(x, y))}, `;
     } else {
       for (let x = 0; x < imageWidth; x++) imageColors = `${imageColors}${getHex(image.getPixelColor(x, y))}, `;
@@ -58,8 +69,8 @@ const getArrayOfPixels = (filePath) => {
 const generateFiles = async (pixelImages) => {
   Object.keys(pixelImages).map(animationName => {
     let propertiesVar = '';
-    const rgbDef = (rgb) ? '[3]' : '';
-    const typeVar = (rgb) ? 'uint8_t' : 'long';
+    const rgbDef = (config.rgb) ? '[3]' : '';
+    const typeVar = (config.rgb) ? 'uint8_t' : 'long';
     let hFile = `const ${typeVar} ${animationName}[][${pixelImages[animationName][0].totalSize}]${rgbDef} PROGMEM = {\n`;
     const sortedFrames = sortByKey(pixelImages[animationName], 'fileName');
     sortedFrames.map(frame => {
@@ -71,8 +82,8 @@ const generateFiles = async (pixelImages) => {
     });
     hFile = `${hFile.slice(0, -3)}\n}\n};`;
     hFile = `${hFile}\nconst int ${animationName}Frames = ${sortedFrames.length};${propertiesVar}`;
-    fs.writeFileSync(`${imagePath}${animationName}/${animationName}.h`, hFile); 
-    console.log(`Saved: ${imagePath}${animationName}/${animationName}.h`);
+    fs.writeFileSync(`${config.imagePath}${animationName}/${animationName}.h`, hFile); 
+    console.log(`Saved: ${config.imagePath}${animationName}/${animationName}.h`);
   });
 };
 const walkDirectories = function (dir, animationName = '') {
@@ -103,4 +114,4 @@ const walkDirectories = function (dir, animationName = '') {
   });
 };
 
-walkDirectories(imagePath);
+walkDirectories(config.imagePath);

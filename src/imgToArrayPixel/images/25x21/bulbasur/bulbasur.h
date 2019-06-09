@@ -91,7 +91,7 @@ const long bulbasur[][525] PROGMEM = {
 };
 const int bulbasurFrames = 4;
         
-const int bulbasurWidth = 21;
+const int bulbasurWidth = 25;
         
-const int bulbasurHeight = 25;
+const int bulbasurHeight = 21;
       

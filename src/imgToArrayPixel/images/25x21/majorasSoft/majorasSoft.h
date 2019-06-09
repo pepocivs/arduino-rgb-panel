@@ -179,7 +179,7 @@ const long majorasSoft[][525] PROGMEM = {
 };
 const int majorasSoftFrames = 8;
         
-const int majorasSoftWidth = 21;
+const int majorasSoftWidth = 25;
         
-const int majorasSoftHeight = 25;
+const int majorasSoftHeight = 21;
       

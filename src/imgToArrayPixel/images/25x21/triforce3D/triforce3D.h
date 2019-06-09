@@ -267,7 +267,7 @@ const long triforce3D[][525] PROGMEM = {
 };
 const int triforce3DFrames = 12;
         
-const int triforce3DWidth = 21;
+const int triforce3DWidth = 25;
         
-const int triforce3DHeight = 25;
+const int triforce3DHeight = 21;
       

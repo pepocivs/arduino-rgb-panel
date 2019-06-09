@@ -69,7 +69,7 @@ const long haunter[][525] PROGMEM = {
 };
 const int haunterFrames = 3;
         
-const int haunterWidth = 21;
+const int haunterWidth = 25;
         
-const int haunterHeight = 25;
+const int haunterHeight = 21;
       

@@ -25,7 +25,7 @@ const long cromatic[][525] PROGMEM = {
 };
 const int cromaticFrames = 1;
         
-const int cromaticWidth = 21;
+const int cromaticWidth = 25;
         
-const int cromaticHeight = 25;
+const int cromaticHeight = 21;
       

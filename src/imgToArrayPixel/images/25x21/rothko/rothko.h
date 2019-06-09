@@ -179,7 +179,7 @@ const long rothko[][525] PROGMEM = {
 };
 const int rothkoFrames = 8;
         
-const int rothkoWidth = 21;
+const int rothkoWidth = 25;
         
-const int rothkoHeight = 25;
+const int rothkoHeight = 21;
       

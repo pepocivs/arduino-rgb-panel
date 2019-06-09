@@ -267,7 +267,7 @@ const long link[][525] PROGMEM = {
 };
 const int linkFrames = 12;
         
-const int linkWidth = 21;
+const int linkWidth = 25;
         
-const int linkHeight = 25;
+const int linkHeight = 21;
       

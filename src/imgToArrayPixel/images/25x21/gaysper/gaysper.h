@@ -179,7 +179,7 @@ const long gaysper[][525] PROGMEM = {
 };
 const int gaysperFrames = 8;
         
-const int gaysperWidth = 21;
+const int gaysperWidth = 25;
         
-const int gaysperHeight = 25;
+const int gaysperHeight = 21;
       
