@@ -1,7 +1,9 @@
 #include <Adafruit_GFX.h>   // Core graphics library
 #include <RGBmatrixPanel.h> // Hardware-specific library
 
-#include "zelda.h"
+#include "zeldaA.h"
+#include "bigtriforceA.h"
+
 
 #define OE   9
 #define LAT 10
@@ -18,18 +20,17 @@ void setup() {
 }
 
 void loop() {
-  int part = 1;
   int timeBetweenAnimations = 50000;
-  showAnimation(part, zelda, zeldaFrames, 250);
+  showAnimation(zelda, zeldaFrames, 250);
+  delay(timeBetweenAnimations);
+  showAnimation(bigtriforce, bigtriforceFrames, 220);
   delay(timeBetweenAnimations);
 }
 
-
-void showAnimation(int part, const long animation[][4096], int nFrames, int frameSpeed) {
+void showAnimation(const long animation[][2048], int nFrames, int frameSpeed) {
   for(int frame = 0; frame < nFrames; frame++) {
     delay(frameSpeed);
     int pixelCount = 0;
-    if (part == 2) { pixelCount = 32*64; }
     for (int y = 0; y < 32; y++) {
       for (int x = 0; x < 64; x++) {
         uint32_t colorHex = pgm_read_dword(&animation[frame][pixelCount]);
