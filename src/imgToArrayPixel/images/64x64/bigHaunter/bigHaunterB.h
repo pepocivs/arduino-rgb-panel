@@ -1,9 +1,9 @@
-const long bigHaunter[][1024] PROGMEM = {
+const long bigHaunter0[1024] PROGMEM = 
 {
-},
+};
+const long bigHaunter1[1024] PROGMEM = 
 {
 
-}
 };
 const int bigHaunterFrames = 2;
         
