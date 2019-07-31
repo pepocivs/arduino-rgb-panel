@@ -7,12 +7,14 @@ const configs = {
     zigzag: false,
     is32Bits: true,
     splitImages: true,
+    isolatedFrames: true,
   },
   ledStrip: {
     imagePath: 'images/25x21/',
     zigzag: true,
     is32Bits: false,
     splitImages: false,
+    isolatedFrames: false,
   }
 }
 
@@ -50,13 +52,13 @@ const getPixels = (image) => {
       for (let x = imageWidth - 1; x >= 0; x--) {
         imageColors = getImageColors(imageColors, image, x, y);
         if (y < 32) imageColorsA = getImageColors(imageColorsA, image, x, y);
-               else imageColorsB = getImageColors(imageColorsA, image, x, y);
+               else imageColorsB = getImageColors(imageColorsB, image, x, y);
       }
     } else {
       for (let x = 0; x < imageWidth; x++) {
         imageColors = getImageColors(imageColors, image, x, y);
         if (y < 32) imageColorsA = getImageColors(imageColorsA, image, x, y);
-               else imageColorsB = getImageColors(imageColorsA, image, x, y);
+               else imageColorsB = getImageColors(imageColorsB, image, x, y);
       }
     }
     imageColors = `${imageColors}\n`;
@@ -82,20 +84,28 @@ const getArrayOfPixels = (filePath) => {
     })
     .catch(err => { throw err });
 }
+const generateDeclaration = (animationName, frameNumber, pixelImages, splitDivisor) => {
+  const secondLevel = (typeof frameNumber === 'number') ? '' : '[]';
+  const secondLevelClose = (typeof frameNumber === 'number') ? '' : '{';
+  return `const long ${animationName}${frameNumber}${secondLevel}[${pixelImages[animationName][0].totalSize/splitDivisor}] PROGMEM = ${secondLevelClose}\n`;
+}
 
 // Core functions
 const generateFileString = (filePart, animationName, pixelImages, splitDivisor) => {
     let propertiesVar = '';
-    let hFile = `const long ${animationName}[][${pixelImages[animationName][0].totalSize/splitDivisor}] PROGMEM = {\n`;
+    const secondLevelClose = (config.isolatedFrames) ? '' : '\n}';
+    const secondLevelEnd = (config.isolatedFrames) ? ';' : ',';
+    let hFile = (config.isolatedFrames) ? '' : generateDeclaration(animationName, '', pixelImages, splitDivisor);
     const sortedFrames = sortByKey(pixelImages[animationName], 'fileName');
-    sortedFrames.map(frame => {
-      hFile = `${hFile}{\n${frame[`colorString${filePart}`]}},\n`;
+    sortedFrames.map((frame, index) => {
+      hFile = `${hFile}${(config.isolatedFrames) ? generateDeclaration(animationName, index, pixelImages, splitDivisor) : ''}`;
+      hFile = `${hFile}{\n${frame[`colorString${filePart}`]}}${secondLevelEnd}\n`;
       propertiesVar = `
         \nconst int ${animationName}Width = ${frame.width};
         \nconst int ${animationName}Height = ${frame.height / splitDivisor};
       `;
     });
-    hFile = `${hFile.slice(0, -3)}\n}\n};`;
+    hFile = `${hFile.slice(0, -3)}${secondLevelClose}\n};`;
     hFile = `${hFile}\nconst int ${animationName}Frames = ${sortedFrames.length};${propertiesVar}`;
     fs.writeFileSync(`${config.imagePath}${animationName}/${animationName}${filePart}.h`, hFile); 
     console.log(`Saved: ${config.imagePath}${animationName}/${animationName}${filePart}.h`);
