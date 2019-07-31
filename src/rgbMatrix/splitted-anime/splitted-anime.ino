@@ -1,9 +1,11 @@
 #include <Adafruit_GFX.h>   // Core graphics library
 #include <RGBmatrixPanel.h> // Hardware-specific library
 
-#include "zeldaA.h"
-#include "bigtriforceA.h"
-
+#include "colorsB.h"
+#include "guinnessB.h"
+#include "kindomHeartsB.h"
+#include "pokemonGhostsB.h"
+#include "zeldaB.h"
 
 #define OE   9
 #define LAT 10
@@ -21,24 +23,24 @@ void setup() {
 
 void loop() {
   int timeBetweenAnimations = 5000;
-  int timeBetweenFrames = 150;
-  // showAnimation(zelda0);
-  // delay(timeBetweenAnimations);
-  showAnimation(bigtriforce0);
-  delay(timeBetweenFrames);
-  showAnimation(bigtriforce1);
-  delay(timeBetweenFrames);
-  showAnimation(bigtriforce2);
-  delay(timeBetweenFrames);
-  showAnimation(bigtriforce3);
-  delay(timeBetweenFrames);
-  showAnimation(bigtriforce4);
-  delay(timeBetweenFrames);
-  showAnimation(bigtriforce5);
-  delay(timeBetweenFrames);
-  showAnimation(bigtriforce6);
-  delay(timeBetweenFrames);
-  // delay(timeBetweenAnimations);
+  showAnimation(colors0);
+  delay(timeBetweenAnimations);
+
+  showAnimation(zelda0);
+  delay(timeBetweenAnimations);
+
+  showAnimation(kindomHearts0);
+  delay(timeBetweenAnimations);
+
+  showAnimation(guinness0);
+  delay(timeBetweenAnimations);
+
+  showAnimation(pokemonGhosts0);
+  delay(timeBetweenAnimations);
+
+  showAnimation(pokemonGhosts2);
+  delay(timeBetweenAnimations);
+
 }
 
 void showAnimation(const long animation[2048]) {
