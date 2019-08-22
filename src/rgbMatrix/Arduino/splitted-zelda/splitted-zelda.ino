@@ -49,7 +49,7 @@ void showAnimation(const long animation[2048]) {
       uint8_t r = (uint8_t)(colorHex >> 16);
       uint8_t g = (uint8_t)(colorHex >> 8);
       uint8_t b = (uint8_t)(colorHex >> 0);
-      matrix.drawPixel(x, y, matrix.Color888(r, g, b, true));
+      matrix.drawPixel(x, y, matrix.color565(r, g, b));
       pixelCount ++;
     }
   }
