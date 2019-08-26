@@ -23,14 +23,17 @@ int timeBetween = 5000;
 
 PxMATRIX display(width,height,P_LAT, P_OE,P_A,P_B,P_C,P_D);
 
-#include "kindomHearts.h"
-#include "escudoGiner.h"
-#include "guinness.h"
-#include "zelda.h"
 #include "bigtriforce.h"
+#include "casaDePapel.h"
 #include "colors.h"
-#include "pokemonPlata.h"
+#include "escudoGiner.h"
+#include "finalFantasy.h"
+#include "guinness.h"
 #include "haunter.h"
+#include "kindomHearts.h"
+#include "pokemonGhosts.h"
+#include "pokemonPlata.h"
+#include "zelda.h"
 
 void display_updater()
 {
@@ -51,7 +54,7 @@ void setup() {
   display.display(0);
   delta_timer = micros() - start_timer;
   Serial.println(delta_timer);
-  display.setBrightness(255);
+  display.flushDisplay();
   display_ticker.attach(0.002, display_updater);
   yield();
   display.clearDisplay();
@@ -59,14 +62,26 @@ void setup() {
 }
 
 void loop() {
+  // KindomHearts
   showAnimation(kindomHearts, kindomHeartsFrames, 220, timeBetween);
+  showAnimation(finalFantasy, finalFantasyFrames, 220, timeBetween);
+
+  // Zelda
   showAnimation(zelda, zeldaFrames, 220, timeBetween);
   repeatAnimation(bigtriforce, bigtriforceFrames, 250, 3);
+
+  // Hockey & Beer
   showAnimation(escudoGiner, escudoGinerFrames, 220, timeBetween);
   showAnimation(guinness, guinnessFrames, 220, timeBetween);
   showAnimation(colors, colorsFrames, 220, timeBetween);
-  repeatAnimation(haunter, haunterFrames, 100, 7);
+
+  //TV Show
+  showAnimation(casaDePapel, casaDePapelFrames, timeBetween, timeBetween);
+
+  // Pokemon
   showAnimation(pokemonPlata, pokemonPlataFrames, 220, timeBetween);
+  repeatAnimation(haunter, haunterFrames, 100, 7);
+  showAnimation(pokemonGhosts, pokemonGhostsFrames, timeBetween, timeBetween);
 }
 
 void repeatAnimation(const long animation[][4096], int nFrames, int delayTime, int times) {
