@@ -17,7 +17,7 @@ int height = 32;
 
 // This defines the 'on' time of the display is us. The larger this number,
 // the brighter the display. If too large the ESP will crash
-uint8_t display_draw_time=70; //10-50 is usually fine
+uint8_t display_draw_time=60; //10-50 is usually fine
 
 int timeBetween = 5000;
 
@@ -28,6 +28,7 @@ PxMATRIX display(width,height,P_LAT, P_OE,P_A,P_B,P_C,P_D);
 #include "guinness.h"
 #include "zelda.h"
 #include "bigtriforce.h"
+#include "colors.h"
 
 void display_updater()
 {
@@ -64,6 +65,8 @@ void loop() {
   showAnimation(escudoGiner, escudoGinerFrames, 220);
   delay(timeBetween);
   showAnimation(guinness, guinnessFrames, 220);
+  delay(timeBetween);
+  showAnimation(colors, colorsFrames, 220);
   delay(timeBetween);
   repeatAnimation(bigtriforce, bigtriforceFrames, 250, 3);
 }
