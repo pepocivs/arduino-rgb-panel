@@ -74,7 +74,7 @@ const getPixels = (image) => {
 
       
     }
-    imageColors = `${imageColors}${secondScreenColors}${firstScreenColors}\n`;
+    imageColors = `${imageColors}${firstScreenColors}${secondScreenColors}\n`;
     if (y < 32) imageColorsA = `${imageColorsA}\n`;
            else imageColorsB = `${imageColorsB}\n`;
   }
@@ -114,8 +114,8 @@ const generateFileString = (filePart, animationName, pixelImages, splitDivisor) 
       hFile = `${hFile}${(config.isolatedFrames) ? generateDeclaration(animationName, index, pixelImages, splitDivisor) : ''}`;
       hFile = `${hFile}{\n${frame[`colorString${filePart}`]}}${secondLevelEnd}\n`;
       propertiesVar = `
-        \nconst int ${animationName}Width = ${frame.width};
-        \nconst int ${animationName}Height = ${frame.height / splitDivisor};
+        \nconst int ${animationName}Width = ${(config.convertTo128Width) ? 128 : frame.width};
+        \nconst int ${animationName}Height = ${(config.convertTo128Width) ? 32 : frame.height / splitDivisor};
       `;
     });
     hFile = `${hFile.slice(0, -3)}${secondLevelClose}\n};`;
