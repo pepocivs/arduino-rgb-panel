@@ -3,14 +3,14 @@ const fs = require('fs');
 
 
 const hPath = './images/64x64';
-const fileName = 'bigTriforce'
+const fileName = 'zelda'
 const width = 128;
 const height = 32;
 
 function readModuleFile(path, callback) {
   try {
       var filename = require.resolve(path);
-      fs.readFile(path, 'utf8', callback);
+      fs.readFile(filename, 'utf8', callback);
   } catch (e) {
       callback(e);
   }
@@ -24,11 +24,11 @@ readModuleFile(`${hPath}/${fileName}/${fileName}.h`, function (err, words) {
   });
 
   
-  new Jimp(width, height, 'green', (err, image) => {
+  new Jimp(width, height, (err, image) => {
     if (err) throw err;
       for (let y = 0; y < height; y ++) {
         for (let x = 0; x < width; x ++) {
-          image.setPixelColor(parseInt(`0x${imagePixels[count]}`), x, y);
+          image.setPixelColor(+("0x"+imagePixels[count]+"ff"), x, y);
           count ++;
         }
       }

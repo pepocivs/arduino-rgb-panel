@@ -86,6 +86,10 @@ const getPixels = (image) => {
 const getArrayOfPixels = (filePath) => {
   return Jimp.read(filePath)
     .then(image => {
+      image.color([
+        { apply: 'saturate', params: [25] },
+        { apply: 'darken', params: [15] }, 
+      ]);
       return {
         totalSize: (image.bitmap.width * image.bitmap.height),
         width: image.bitmap.width,
