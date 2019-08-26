@@ -6,13 +6,15 @@ const configs = {
     imagePath: 'images/64x64/',
     zigzag: false,
     is32Bits: true,
+    convertTo128Width: true,
     splitImages: true,
-    isolatedFrames: true,
+    isolatedFrames: false,
   },
   ledStrip: {
     imagePath: 'images/25x21/',
     zigzag: true,
     is32Bits: false,
+    convertTo128Width: false,
     splitImages: false,
     isolatedFrames: false,
   }
@@ -43,11 +45,15 @@ const getImageColors = (str, img, x, y) => `${str}${getHex(img.getPixelColor(x, 
 
 const getPixels = (image) => {
   const imageWidth = image.bitmap.width;
-  const imageHeight = image.bitmap.height;
+  const imageHeight = (config.convertTo128Width) ? image.bitmap.height / 2 : image.bitmap.height;
   let imageColors = '';
   let imageColorsA = '';
   let imageColorsB = '';
+  let firstScreenColors = '';
+  let secondScreenColors = '';
   for (let y = 0; y < imageHeight; y++) {
+    firstScreenColors = '';
+    secondScreenColors = '';
     if (y !== 0 && y % 2 !== 0 && config.zigzag) {
       for (let x = imageWidth - 1; x >= 0; x--) {
         imageColors = getImageColors(imageColors, image, x, y);
@@ -56,12 +62,19 @@ const getPixels = (image) => {
       }
     } else {
       for (let x = 0; x < imageWidth; x++) {
-        imageColors = getImageColors(imageColors, image, x, y);
+        if (config.convertTo128Width) {
+          firstScreenColors = getImageColors(firstScreenColors, image, x, y);
+          secondScreenColors = getImageColors(secondScreenColors, image, x, y + imageHeight);
+        } else {
+          imageColors = getImageColors(imageColors, image, x, y);
+        }
         if (y < 32) imageColorsA = getImageColors(imageColorsA, image, x, y);
                else imageColorsB = getImageColors(imageColorsB, image, x, y);
       }
+
+      
     }
-    imageColors = `${imageColors}\n`;
+    imageColors = `${imageColors}${secondScreenColors}${firstScreenColors}\n`;
     if (y < 32) imageColorsA = `${imageColorsA}\n`;
            else imageColorsB = `${imageColorsB}\n`;
   }
