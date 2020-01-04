@@ -22,6 +22,7 @@ uint8_t display_draw_time=75; //10-50 is usually fine
 PxMATRIX display(width,height,P_LAT, P_OE,P_A,P_B,P_C,P_D);
 
 #include "navidad.h"
+#include "fireplace.h"
 
 void display_updater()
 {
@@ -50,7 +51,8 @@ void setup() {
 }
 
 void loop() {
-  showAnimation(navidad, navidadFrames, 800, 0);
+  showAnimation(fireplace, fireplaceFrames, 800, 30000);
+  repeatAnimation(navidad, navidadFrames, 800, 10);
 }
 
 void repeatAnimation(const long animation[][4096], int nFrames, int delayTime, int times) {
