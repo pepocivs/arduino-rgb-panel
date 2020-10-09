@@ -17,10 +17,18 @@ const configs = {
     convertTo128Width: false,
     splitImages: false,
     isolatedFrames: false,
+  },
+  ledStripBig: {
+    imagePath: 'images/34x34/',
+    zigzag: false,
+    is32Bits: false,
+    convertTo128Width: false,
+    splitImages: false,
+    isolatedFrames: false,
   }
 }
 
-const config = configs.ledMatrix;
+const config = configs.ledStripBig;
 
 // Helper functions
 const getHex = (str) => {
