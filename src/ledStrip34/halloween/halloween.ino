@@ -39,10 +39,10 @@ void loop() {
   changeBrightness(removeBrightnessButton, -1);
   switch (programNo) {
     case 1:
-      showAnimation(halloween01, halloween01Frames, 5000);
+      showAnimation(halloween01, halloween01Frames, 250);
       break;
     case 2:
-      showAnimation(halloween02, halloween02Frames, 5000);
+      showAnimation(halloween02, halloween02Frames, 250);
       break;
     case 3:
       showAnimation(halloween03, halloween03Frames, 250);
