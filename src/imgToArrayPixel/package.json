@@ -2,6 +2,6 @@
   "name": "img-to-array",
   "version": "1.0.0",
   "dependencies": {
-    "jimp": "^0.6.4"
+    "jimp": "^0.22.7"
   }
 }
